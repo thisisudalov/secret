@@ -1,5 +1,6 @@
 so, basic concept is that player always stays x-in-middle of screen,
 while other context is moving around.
+if middle of player model is higher then the middle of screen than screen moves in y direction
 feature steps:
 1) engine which lets you move w/a/d n place objects in view, tracking possible
 collisions, so engineer can put some views on the screen n, f.e. jump over them.

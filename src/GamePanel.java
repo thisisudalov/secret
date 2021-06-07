@@ -1,19 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GamePanel extends JPanel implements Runnable {
-
     private final Player player = new Player();
     private Thread gameThread;
+    private final ObjectsHolder objectsHolder = new ObjectsHolder();
+    private ScreenMovement screenMovement;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(ScreenConstants.SCREEN_WIDTH, ScreenConstants.SCREEN_HEIGHT));
-        this.addKeyListener(new CustomKeyListener());
         this.setFocusable(true);
+        screenMovement = new ScreenMovement(player, objectsHolder);
+        this.addKeyListener(new CustomKeyListener(screenMovement,  this::repaint));
 
         gameThread = new Thread(this, "Mad bob");
         gameThread.start();
@@ -24,28 +22,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void draw(Graphics g) {
-        player.draw(g);
+        screenMovement.draw(g, this);
     }
 
     private void update() {
-        player.update();
-    }
-
-    private class CustomKeyListener extends KeyAdapter {
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_RIGHT:
-                    player.moveRight();
-                    break;
-                case KeyEvent.VK_SPACE:
-                case KeyEvent.VK_UP:
-                    player.jump();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    player.moveLeft();
-                    break;
-            }
-        }
+        screenMovement.update();
     }
 
     @Override
@@ -60,12 +41,4 @@ public class GamePanel extends JPanel implements Runnable {
             repaint();
         }
     }
-
-    private class CustomMouseListener extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            super.mouseClicked(e);
-        }
-    }
-
 }
