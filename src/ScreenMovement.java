@@ -20,8 +20,6 @@ public class ScreenMovement {
     private boolean isMovingUp;
     private Set<GameObject> gameObjects;
 
-    //TODO перенести в этот класс управление отображением ВСЕХ объектов на экране, так же как и пересечением игрока и объектов.
-
     public ScreenMovement(Player player, ObjectsHolder objectsHolder) {
         this.player = player;
         this.objectsHolder = objectsHolder;
